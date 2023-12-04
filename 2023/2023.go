@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
-	"github.com/bartelsb/adventofcode/2023/day1"
+	"github.com/bartelsb/adventofcode/2023/day2"
 )
 
 func main() {
-	sum := day1.SumCalibrationValues("./day1/input.txt")
-	result := fmt.Sprintf("Result is %d", sum)
-	fmt.Println(result)
+	result := day2.Solve("./day2/input.txt", 12, 13, 14)
+	fmt.Println("Result is " + strconv.Itoa(result))
 }
