@@ -59,7 +59,7 @@ func check(e error) {
 }
 
 func Solve(inputFile string, redCubes, greenCubes, blueCubes int) int {
-	actualCubes := New().Red(redCubes).Green(greenCubes).Blue(blueCubes).Build()
+	// actualCubes := New().Red(redCubes).Green(greenCubes).Blue(blueCubes).Build()
 
 	content, err := os.ReadFile(inputFile)
 	check(err)
@@ -69,7 +69,7 @@ func Solve(inputFile string, redCubes, greenCubes, blueCubes int) int {
 	sum := 0
 	for _, game := range games {
 		gameResult := parseGameData(game)
-		sum += isGameValid(actualCubes, gameResult)
+		sum += cubeCountPower(minimumNecessaryCubes(gameResult))
 	}
 	return sum
 }
@@ -118,4 +118,24 @@ func isGameValid(actual *CubeCount, gameResult *GameResult) int {
 	}
 	fmt.Printf("Game %d was valid\n", gameResult.ID)
 	return gameResult.ID
+}
+
+func minimumNecessaryCubes(gameResult *GameResult) *CubeCount {
+	minimumCounts := New()
+	for _, draw := range gameResult.Result {
+		if draw.Cubes[0] > minimumCounts.red {
+			minimumCounts.Red(draw.Cubes[0])
+		}
+		if draw.Cubes[1] > minimumCounts.green {
+			minimumCounts.Green(draw.Cubes[1])
+		}
+		if draw.Cubes[2] > minimumCounts.blue {
+			minimumCounts.Blue(draw.Cubes[2])
+		}
+	}
+	return minimumCounts.Build()
+}
+
+func cubeCountPower(cubeCount *CubeCount) int {
+	return cubeCount.Cubes[0] * cubeCount.Cubes[1] * cubeCount.Cubes[2]
 }
