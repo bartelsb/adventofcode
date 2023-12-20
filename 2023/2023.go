@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/bartelsb/adventofcode/2023/day2"
+	"github.com/bartelsb/adventofcode/2023/day4"
 )
 
 func main() {
-	result := day2.Solve("./day2/input.txt", 12, 13, 14)
+	result := day4.Solve("./day4/input.txt")
 	fmt.Println("Result is " + strconv.Itoa(result))
 }
