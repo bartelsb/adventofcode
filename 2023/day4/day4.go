@@ -1,7 +1,6 @@
 package day4
 
 import (
-	"fmt"
 	"os"
 	"regexp"
 	"strconv"
@@ -18,6 +17,7 @@ type Card struct {
 	Number  int
 	Winners []int
 	Players []int
+	Copy    bool
 }
 
 func Solve(inputFile string) int {
@@ -26,9 +26,23 @@ func Solve(inputFile string) int {
 
 	cards := parseCards(string(content))
 
+	// initialize cardTracker with all ones
+	cardTracker := make([]int, len(cards))
+	for i, _ := range cardTracker {
+		cardTracker[i] = 1
+	}
+
+	for i, card := range cards {
+		matches := getCardMatches(card)
+		for j := 1; j <= matches; j++ {
+			cardTracker[i+j] = cardTracker[i+j] + (1 * cardTracker[i])
+		}
+
+	}
+
 	sum := 0
-	for _, card := range cards {
-		sum += getCardValue(card)
+	for _, number := range cardTracker {
+		sum += number
 	}
 	return sum
 }
@@ -43,6 +57,7 @@ func parseCards(input string) []Card {
 		if len(matches) >= 3 {
 			number, _ := strconv.Atoi(matches[1])
 			card.Number = number
+			card.Copy = false
 		} else {
 			continue
 		}
@@ -66,7 +81,6 @@ func getCardValue(card Card) int {
 	value := 0
 	for _, number := range card.Players {
 		for _, winner := range card.Winners {
-			fmt.Printf("Checking %v and %v\n", number, winner)
 			if number == winner {
 				if value == 0 {
 					value = 1
@@ -77,4 +91,16 @@ func getCardValue(card Card) int {
 		}
 	}
 	return value
+}
+
+func getCardMatches(card Card) int {
+	matches := 0
+	for _, number := range card.Players {
+		for _, winner := range card.Winners {
+			if number == winner {
+				matches += 1
+			}
+		}
+	}
+	return matches
 }
