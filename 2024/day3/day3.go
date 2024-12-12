@@ -16,8 +16,11 @@ func Solve(inputFile string) int {
 	content, err := os.ReadFile(inputFile)
 	check(err)
 
+	reRemove := regexp.MustCompile(`don't\(\)(?s:.*?)(?:do\(\)|$)`)
+	filteredContent := reRemove.ReplaceAllString(string(content), "$1$2")
+
 	re := regexp.MustCompile(`mul\((\d{1,3}),(\d{1,3})\)`)
-	matches := re.FindAllStringSubmatch(string(content), -1)
+	matches := re.FindAllStringSubmatch(filteredContent, -1)
 
 	result := 0
 	for _, match := range matches {
