@@ -1,7 +1,6 @@
 package day1
 
 import (
-	"math"
 	"os"
 	"regexp"
 	"sort"
@@ -23,12 +22,25 @@ func Solve(inputFile string) int {
 	sort.Ints(leftArr)
 	sort.Ints(rightArr)
 
-	totalDistance := 0
+	// totalDistance := 0
+	// for i := 0; i < len(leftArr); i++ {
+	// 	distance := math.Abs((float64)(leftArr[i] - rightArr[i]))
+	// 	totalDistance += int(distance)
+	// }
+	// return totalDistance
+
+	total := 0
 	for i := 0; i < len(leftArr); i++ {
-		distance := math.Abs((float64)(leftArr[i] - rightArr[i]))
-		totalDistance += int(distance)
+		appearances := 0
+		for j := 0; j < len(rightArr); j++ {
+			if leftArr[i] == rightArr[j] {
+				appearances++
+			}
+		}
+		score := appearances * leftArr[i]
+		total += score
 	}
-	return totalDistance
+	return total
 }
 
 func parseInput(content []byte) ([]int, []int) {
