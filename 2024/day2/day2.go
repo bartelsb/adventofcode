@@ -31,13 +31,18 @@ func Solve(inputFile string) int {
 	for _, report := range reports {
 		safe := true
 		direction := true
+		issues := 0
 		if report[0] != report[1] {
 			direction = checkDirection(report[0], report[1])
 		}
 		for i := 0; i < len(report)-1; i++ {
 			safe = checkLevelDiff(report[i], report[i+1], direction)
 			if !safe {
-				break
+				issues++
+				if issues > 1 {
+					break
+				}
+				safe = true
 			}
 		}
 		if safe {
